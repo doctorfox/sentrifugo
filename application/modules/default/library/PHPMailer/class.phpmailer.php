@@ -1307,6 +1307,16 @@ class PHPMailer
     protected function smtpSend($header, $body)
     {
         $bad_rcpt = array();
+        //The next 2 command lines below will disable SSL verification for all external servers you use to send email. Use with caution.
+        $this->SMTPOptions = array(
+        'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true,
+            )
+        );
+        $this->SMTPAutoTLS = false;
+        
         if (!$this->smtpConnect($this->SMTPOptions)) {
             throw new phpmailerException($this->lang('smtp_connect_failed'), self::STOP_CRITICAL);
         }
